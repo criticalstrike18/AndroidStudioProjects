@@ -30,7 +30,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuadrantcomposeTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     QuadrantCompose()
                 }
             }
@@ -38,16 +40,58 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
-fun Quadrant(title: String,description: String, bgcolor: Color, modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+fun QuadrantCompose() {
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.weight(1f)) {
+            Quadrant(
+                title = stringResource(id = R.string.title1),
+                description = stringResource(id = R.string.des1),
+                bgcolor = Color(0xFFEADDFF),
+                modifier = Modifier.weight(1f)
+            )
+            Quadrant(
+                title = stringResource(id = R.string.title2),
+                description = stringResource(id = R.string.description2) ,
+                bgcolor = Color(0xFFD0BCFF),
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Row(Modifier.weight(1f)) {
+            Quadrant(
+                title = stringResource(id = R.string.title3),
+                description = stringResource(id = R.string.description3),
+                bgcolor = Color(0xFFB69DF8),
+                modifier = Modifier.weight(1f)
+            )
+            Quadrant(
+                title = stringResource(id = R.string.title4),
+                description = stringResource(id = R.string.description4),
+                bgcolor = Color(0xFFF6EDFF),
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun Quadrant(
+    title: String,
+    description: String,
+    bgcolor: Color,
+    modifier: Modifier = Modifier
+) {
+    Column(
         modifier = modifier
+            .fillMaxSize()
             .background(bgcolor)
-            .padding(16.dp)
-            .fillMaxWidth()) {
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(text = title,
-            modifier = modifier.padding(16.dp),
+            modifier = Modifier.padding(bottom = 16.dp),
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )
@@ -57,28 +101,11 @@ fun Quadrant(title: String,description: String, bgcolor: Color, modifier: Modifi
         )
     }
 }
-@Composable
-fun QuadrantCompose() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.weight(1f)) {
-            Quadrant(title = stringResource(id = R.string.title1) , description = stringResource(
-                id = R.string.des1), bgcolor = Color(0xFFEADDFF), modifier = Modifier.weight(1f))
-            Quadrant(title = stringResource(id = R.string.title2), description = stringResource(
-                id = R.string.description2) , bgcolor = Color(0xFFD0BCFF), modifier = Modifier.weight(1f))
-        }
-        Row(modifier = Modifier.weight(1f)) {
-            Quadrant(title = stringResource(id = R.string.title3), description = stringResource(
-                id = R.string.description3), bgcolor = Color(0xFFB69DF8), modifier = Modifier.weight(1f))
-            Quadrant(title = stringResource(id = R.string.title4), description = stringResource(
-                id = R.string.description4), bgcolor = Color(0xFFF6EDFF), modifier = Modifier.weight(1f))
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     QuadrantcomposeTheme {
-
+        QuadrantCompose()
     }
 }
