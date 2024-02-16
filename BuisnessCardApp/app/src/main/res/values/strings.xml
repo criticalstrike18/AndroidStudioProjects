@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BuisnessCardApp</string>
+    <string name="full_name">Saksham Patel</string>
+    <string name="FieldTitle">Android Developer</string>
+    <string name="phoneno">+91 7387175655</string>
+    <string name="handle">"@saksham6484"</string>
+    <string name="email">saksham.6484@gmail.com</string>
+</resources>
