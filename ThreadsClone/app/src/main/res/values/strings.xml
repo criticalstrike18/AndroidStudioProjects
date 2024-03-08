@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ThreadsClone</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup">Sign Up</string>
+    <string name="user_name">User Name</string>
+    <string name="log_in">Log In</string>
+    <string name="this_is_profile_page">This is profile page</string>
+</resources>

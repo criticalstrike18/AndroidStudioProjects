@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "511415176541",
+    "firebase_url": "https://threadsclone-f7b51-default-rtdb.firebaseio.com",
+    "project_id": "threadsclone-f7b51",
+    "storage_bucket": "threadsclone-f7b51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511415176541:android:ba631d59d65822aa772cb4",
+        "android_client_info": {
+          "package_name": "com.example.threadsclone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM69DXB5h6fgED27luZV4oEdoFj76R-68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

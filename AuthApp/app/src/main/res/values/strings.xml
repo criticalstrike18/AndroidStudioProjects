@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AuthApp</string>
+    <string name="heyThere">Hey There,</string>
+    <string name="createAccount">Create an Account</string>
+    <string name="welcomeBack">Welcome Back</string>
+    <string name="TandC">By Continuing you agree to out Terms &amp; Conditions</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
 </resources>
