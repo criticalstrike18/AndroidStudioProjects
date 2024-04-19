@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "628419482603",
+    "project_id": "cropwise-f33d1",
+    "storage_bucket": "cropwise-f33d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628419482603:android:5f8483eb9463a4c8c67fae",
+        "android_client_info": {
+          "package_name": "com.example.cropwise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPvt3PXLv74bUBGPW0fZ9bXvYw-Zm0nd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
