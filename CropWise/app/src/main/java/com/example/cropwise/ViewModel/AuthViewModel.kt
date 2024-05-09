@@ -3,9 +3,10 @@ package com.example.cropwise.ViewModel
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,12 +22,15 @@ import com.example.cropwise.utils.RetrofitInstance.api
 import com.example.cropwise.utils.RetrofitInstance.api2
 import com.example.cropwise.utils.RetrofitInstance.api3
 import com.example.cropwise.utils.SharedPrefs
-import com.example.cropwise.utils.utils
-import com.example.cropwise.utils.utils.Extra
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AuthViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
@@ -50,11 +54,9 @@ class AuthViewModel : ViewModel() {
     private val _location = mutableStateOf<Locationdata?>(null)
             val location: State<Locationdata?> = _location
 
-    private val _pointsData = mutableStateOf<List<Point>>(emptyList())
-    var pointsData: State<List<Point>> = _pointsData
 
-    private val _shouldShowChart = mutableStateOf(false)
-    var shouldShowChart: State<Boolean> = _shouldShowChart
+
+
 
     init {
         _firebaseUser.value =auth.currentUser
@@ -95,6 +97,7 @@ class AuthViewModel : ViewModel() {
 
             }
     }
+
 
     fun logout() {
         auth.signOut()
@@ -302,48 +305,109 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
-
-    fun priceRequest(commodity:Int) {
+    val pointsData0: MutableState<List<Point>> = mutableStateOf(emptyList())
+    val pointsData1: MutableState<List<Point>> = mutableStateOf(emptyList())
+    val pointsData2: MutableState<List<Point>> = mutableStateOf(emptyList())
+    val pointsData3: MutableState<List<Point>> = mutableStateOf(emptyList())
+    val loading: MutableState<Boolean> = mutableStateOf(false)
+    fun priceRequest() {
         val userId = auth.currentUser?.uid ?: return
         val database = FirebaseDatabase.getInstance().reference
         val state = database.child("users").child(userId).child("State")
-
         state.get().addOnSuccessListener { StringSnapshot ->
             val StringState = StringSnapshot.getValue(String::class.java) ?: ""
             val State = mapStringToInteger(StringState)
-
             viewModelScope.launch {
-                _shouldShowChart.value = false
-                _pointsData.value = emptyList()
-                Log.d("PricePredict Loading state", shouldShowChart.value.toString())
+                loading.value = true
+                pointsData0.value = emptyList()
+                pointsData1.value = emptyList()
+                pointsData2.value = emptyList()
+                pointsData3.value = emptyList()
                 try {
+                    val newData0 = mutableListOf<Point>()
+                    val newData1 = mutableListOf<Point>()
+                    val newData2 = mutableListOf<Point>()
+                    val newData3 = mutableListOf<Point>()
+
+//                    Commodity3
+
                     for (month in 1..12) {
-                        val requestdata = SendPricePredict(state = State,commodity = commodity,month = month)
+                        val requestdata = SendPricePredict(state = State,commodity = 3,month = month)
                         Log.d("PricePredict", "Request data:$requestdata ")
                         val response = api2.getPricePredict(requestdata)
                         if (response.isSuccessful && response.body() != null) {
                             val responseData = response.body()!!
-                            Log.d("PricePredict", "Request data:$responseData ")
                             val x = month.toFloat()
                             val y = responseData.predicted_price.toFloat()
-                            Log.d("PricePredict", "x:$x ")
-                            Log.d("PricePredict", "y:$y ")
-                            _pointsData.value += Point(x, y)
+                            newData3.add(Point(x, y))
+                            Log.d("PriceComposable",newData3.toString())
+                            Log.d("loadingComposable",loading.value.toString())
                         }
                     }
+                    pointsData3.value= newData3
+                    Log.d("PriceComposable",pointsData3.value.toString())
+
+                    //                    Commodity2
+
+                    for (month in 1..12) {
+                        val requestdata = SendPricePredict(state = State,commodity = 2,month = month)
+                        Log.d("PricePredict", "Request data:$requestdata ")
+                        val response = api2.getPricePredict(requestdata)
+                        if (response.isSuccessful && response.body() != null) {
+                            val responseData = response.body()!!
+                            val x = month.toFloat()
+                            val y = responseData.predicted_price.toFloat()
+                            newData2.add(Point(x, y))
+                            Log.d("PriceComposable",newData2.toString())
+                            Log.d("loadingComposable",loading.value.toString())
+                        }
+                    }
+                    pointsData2.value= newData2
+                    Log.d("PriceComposable",pointsData2.value.toString())
+
+                    //                    Commodity1
+
+                    for (month in 1..12) {
+                        val requestdata = SendPricePredict(state = State,commodity = 1,month = month)
+                        Log.d("PricePredict", "Request data:$requestdata ")
+                        val response = api2.getPricePredict(requestdata)
+                        if (response.isSuccessful && response.body() != null) {
+                            val responseData = response.body()!!
+                            val x = month.toFloat()
+                            val y = responseData.predicted_price.toFloat()
+                            newData1.add(Point(x, y))
+                            Log.d("PriceComposable",newData3.toString())
+                            Log.d("loadingComposable",loading.value.toString())
+                        }
+                    }
+                    pointsData1.value= newData1
+                    Log.d("PriceComposable",pointsData1.value.toString())
+
+                    //                    Commodity0
+
+                    for (month in 1..12) {
+                        val requestdata = SendPricePredict(state = State,commodity = 0,month = month)
+                        Log.d("PricePredict", "Request data:$requestdata ")
+                        val response = api2.getPricePredict(requestdata)
+                        if (response.isSuccessful && response.body() != null) {
+                            val responseData = response.body()!!
+                            val x = month.toFloat()
+                            val y = responseData.predicted_price.toFloat()
+                            newData0.add(Point(x, y))
+                            Log.d("PriceComposable",newData3.toString())
+                            if(month == 12){
+                                loading.value = false
+                            }
+                            Log.d("loadingComposable",loading.value.toString())
+                        }
+                    }
+                    pointsData0.value= newData0
+                    Log.d("PriceComposable",pointsData0.value.toString())
                 }catch (e:Exception){
-                    Log.d("PricePredict", "$e ")
-                }finally {
-                    _shouldShowChart.value = true
-                    Log.d("PricePredict Loading State", shouldShowChart.value.toString())
                 }
             }
         }
     }
-
-
-
-
 
     private fun mapStringToInteger(stateString: String): Int {
         return when (stateString) {

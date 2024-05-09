@@ -11,10 +11,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,7 +52,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -257,7 +259,7 @@ fun HandleRegistrationSuccess(firebaseUser: FirebaseUser?, navController: NavHos
 }
 
 @Composable
-fun ParamsUpdateButton(Nitrogen: Int, Phosphorus: Int, Pottasium: Int, Ph: Int,navController: NavHostController){
+fun ParamsUpdateButton(nitrogen: Int, phosphorus: Int, potassium: Int, ph: Int, navController: NavHostController){
     val authViewModel : AuthViewModel = viewModel()
     val context = LocalContext.current
     val showExplanation by remember { mutableStateOf(false) }
@@ -298,10 +300,10 @@ fun ParamsUpdateButton(Nitrogen: Int, Phosphorus: Int, Pottasium: Int, Ph: Int,n
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION )
             == PackageManager.PERMISSION_GRANTED) {
             locationUtils.requestLocationUpdates(viewModel= authViewModel)
-            isValid = Nitrogen != 0 && Phosphorus != 0 && Pottasium != 0 && Ph != 0
+            isValid = nitrogen != 0 && phosphorus != 0 && potassium != 0 && ph != 0
             if(isValid){
                 Log.d("valid","It is valid")
-                authViewModel.updateParams(Nitrogen,Phosphorus,Pottasium,Ph)
+                authViewModel.updateParams(nitrogen,phosphorus,potassium,ph)
                 if (location != null) {
                     try {
                         authViewModel.UpdateLocation(location.latitude,location.longitude)
@@ -521,6 +523,17 @@ fun CircularBulletList(items: List<String>) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun CircleLoader(){
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     }
 }
 

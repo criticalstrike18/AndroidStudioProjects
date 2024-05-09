@@ -3,12 +3,15 @@
 package com.example.cropwise.screens
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,9 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -30,7 +31,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -60,6 +60,7 @@ import com.example.cropwise.components.CardDesc2
 import com.example.cropwise.components.CardHeading
 import com.example.cropwise.components.CardSubHeading
 import com.example.cropwise.components.CardSubHeading2
+import com.example.cropwise.components.CircleLoader
 import com.example.cropwise.components.CircularBulletList
 import com.example.cropwise.model.CropData
 
@@ -116,11 +117,7 @@ fun CropRecommendations(viewModel: AuthViewModel,navController: NavHostControlle
         }
 
         if (isLoading && recommendation == null ) {   // Show progress indicator when loading
-            CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
-                color = MaterialTheme.colorScheme.secondary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            )
+            CircleLoader()
         }
 
         if (recommendation != null) { // Display recommendation if available
@@ -136,8 +133,58 @@ val CropList = listOf(
     CropData("rice",R.drawable.rice,R.string.rice,R.string.ricedesc,R.string.ricefertreq,(listOf("Compost","Animal Manure(well rotted)","Vermicompost","Green Manure")),(listOf("Azolla","Compost Tea","Fish Emulsion","Bone Meal"))),
     CropData("chickpea",R.drawable.chickpea,R.string.chickpeas,R.string.chickpeadesc,R.string.chickpeafertreq,(listOf("Compost","Well-rotted Manure","Bone Meal","Neem Cake")),(listOf("Vermicompost","Compost Tea","Fish Emulsion","Wood Ash"))),
     CropData("cotton",R.drawable.cotton,R.string.cotton,R.string.cottondesc,R.string.cottonfertreq,(listOf("Compost","Manure","Bone Meal","Fish Meal")),(listOf("Seaweed Extract","Compost Tea","Fish Emulsion","Worm Castings"))),
-    CropData("cotton",R.drawable.cotton,R.string.cotton,R.string.cottondesc,R.string.cottonfertreq,(listOf("Compost","Manure","Bone Meal","Fish Meal")),(listOf("Seaweed Extract","Compost Tea","Fish Emulsion","Worm Castings"))),
+    CropData("maize",R.drawable.maize,R.string.maize,R.string.maizedesc,R.string.maizefertreq,(listOf("Compost","Manure","Bone Meal","Blood Meal")),(listOf("Compost Tea","Fish Emulsion","Worm Castings"))),
+    CropData("coconut",R.drawable.coconut,R.string.coconut,R.string.coconutdesc,R.string.coconutfertreq,(listOf("Compost","Coir Pith Compost","Farmyard Manure (FYM)")),(listOf("Green Manures","Vermicompost","Neem Cake","Bone Meal","Seaweed Extract"))),
+    CropData("blackgram",R.drawable.blackgram,R.string.blackgram,R.string.blackgramdesc,R.string.blackgramfertreq,(listOf("Compost","Vermicompost","Neem Cake")),(listOf("Leguminous Cover Crops","Manure","Fish Emulsion"))),
+    CropData("jute",R.drawable.jute,R.string.jute,R.string.jutedesc,R.string.jutefertreq,(listOf("Compost","Vermicompost","Farmyard Manure (FYM)")),(listOf("Liquid Manure","Mustard Cake or Neem Cake","Bone Meal","Wood Ash"))),
+    CropData("kidneybeans",R.drawable.kidneybeans,R.string.kidneybeans,R.string.kidneybeansdesc,R.string.kidneybeansfertreq,(listOf("Compost","Vermicompost","Manure","Bone Meal","Fish Meal")),(listOf("Kelp Meal","Worm Castings","Compost Tea"))),
+    CropData("pigeonpeas",R.drawable.pigeonspeas,R.string.pigeon_peas,R.string.pigeonpeasdesc,R.string.pigeonpeasfertreq,(listOf("Compost","Rock Phosphate","Bone Meal","Farmyard Manure (FYM)")),(listOf("Vermicompost","Fish Emulsion/Seaweed Extract","Compost Tea"))),
+    CropData("orange", R.drawable.orange, R.string.oranges, R.string.orangedesc, R.string.orangefertreq, (listOf("Compost", "Manure", "Bone Meal")), (listOf("Fish Emulsion", "Seaweed Extract", "Worm Castings"))),
+    CropData("pomegranate", R.drawable.pomegranate, R.string.pomegranate, R.string.pomegranatedesc, R.string.pomegranatefertreq, (listOf("Compost", "Manure","Bone Meal")), (listOf("Fish Emulsion", "Neem Cake", "Compost Tea","Vermicompost"))),
+    CropData("apple", R.drawable.apple, R.string.apple, R.string.appledesc, R.string.applefertreq, (listOf("Compost", "Bone Meal","Worm Castings")), (listOf("Fish Emulsion", "Seaweed Extract", "Compost Tea"))),
+    CropData("muskmelon", R.drawable.muskmelon, R.string.muskmelon, R.string.muskmelondesc, R.string.muskmelonfertreq, (listOf("Compost","Bone Meal", "Blood Meal", "Worm Castings")), (listOf( "Compost Tea", "Fish Emulsion", "Kelp Meal", "Well-aged Manure")))
 )
+
+fun getImageResIdForCrop(cropName: String): Int? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.imageResId // Return the imageResId or null if not found
+}
+
+fun getHeadResIdForCrop(cropName: String): Int? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.headResId // Return the imageResId or null if not found
+}
+
+fun getDescriptionIdForCrop(cropName: String): Int? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.descriptionResId // Return the imageResId or null if not found
+}
+fun getFertIdForCrop(cropName: String): Int? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.fertReqId // Return the imageResId or null if not found
+}
+
+fun getBeforePlantingForCrop(cropName: String): List<String>? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.beforePlanting
+}
+
+fun getAfterPlantingForCrop(cropName: String): List<String>? {
+    val normalizedCropName = cropName.lowercase()
+    val cropData = CropList.find { it.name.lowercase() == normalizedCropName }
+
+    return cropData?.afterPlanting
+}
 
 @Composable
 fun CropBox(crop:String) {
@@ -154,59 +201,9 @@ fun CropBox(crop:String) {
                 .align(Alignment.Center) // Align the card to the center
                 .fillMaxSize() // Make the card take full width
         ) {
-            val cropImageMap = mapOf(
-                "mothbeans" to R.drawable.mothbeans,
-                "coffee" to R.drawable.coffee,
-                "rice" to R.drawable.rice,
-                "chickpea" to R.drawable.chickpea,
-                "cotton" to R.drawable.cotton,
-                "maize" to R.drawable.maize,
-                "coconut" to R.drawable.coconut,
-                "blackgram" to R.drawable.blackgram,
-                "jute" to R.drawable.jute,
-                "kidneybeans" to R.drawable.kidneybeans,
-                "pigeonpeas" to R.drawable.pigeonspeas,
-                "orange" to R.drawable.orange,
-                "pomegranate" to R.drawable.pomegranate,
-                "apple" to R.drawable.apple,
-                "muskmelon" to R.drawable.muskmelon,
-            )
-            val cropHeading = mapOf(
-                "mothbeans" to R.string.mothbeans,
-                "coffee" to R.string.coffee,
-                "rice" to R.string.rice,
-                "chickpea" to R.string.chickpeas,
-                "cotton" to R.string.cotton,
-                "maize" to R.string.maize,
-                "coconut" to R.string.coconut,
-                "blackgram" to R.string.blackgram,
-                "jute" to R.string.jute,
-                "kidneybeans" to R.string.kidneybeans,
-                "pigeonpeas" to R.string.pigeon_peas,
-                "orange" to R.string.oranges,
-                "pomegranate" to R.string.pomegranate,
-                "muskmelon" to R.string.muskmelon,
-            )
-            val cropDesc = mapOf(
-                "mothbeans" to R.string.mothbeansdesc,
-                "coffee" to R.string.coffeedesc,
-                "rice" to R.string.ricedesc,
-                "chickpea" to R.string.chickpeadesc,
-                "cotton" to R.string.cottondesc,
-                "maize" to R.string.maizedesc,
-                "coconut" to R.string.coconutdesc,
-                "blackgram" to R.string.blackgramdesc,
-                "jute" to R.string.jutedesc,
-                "kidneybeans" to R.string.kidneybeansdesc,
-                "pigeonpeas" to R.string.pigeonpeasdesc,
-                "orange" to R.string.orangedesc,
-                "pomegranate" to R.string.pomegranatedesc,
-                "apple" to R.string.appledesc,
-                "muskmelon" to R.string.muskmelondesc,
-            )
-            val imageResId = cropImageMap[crop.lowercase()] ?: R.drawable.mothbeans
-            val cropHeadId = cropHeading[crop.lowercase()] ?: R.string.mothbeans
-            val cropDescId = cropDesc[crop.lowercase()] ?: R.string.mothbeansdesc
+            val imageResId = getImageResIdForCrop(crop) ?: R.drawable.mothbeans
+            val cropHeadId = getHeadResIdForCrop(crop) ?: R.string.mothbeans
+            val cropDescId = getDescriptionIdForCrop(crop) ?: R.string.mothbeansdesc
 
             Column { // Wrap elements in a Column
                 Image(painter = painterResource(id = imageResId), contentDescription = "CropImage")
@@ -233,74 +230,9 @@ fun Box2(crop: String){
                 .fillMaxSize()
         // Make the card take full width
         ) {
-            val cropImageMap = mapOf(
-                "mothbeans" to R.drawable.mothbeans,
-                "coffee" to R.drawable.coffee,
-                "rice" to R.drawable.rice,
-                "chickpea" to R.drawable.chickpea,
-                "cotton" to R.drawable.cotton,
-                "maize" to R.drawable.maize,
-                "coconut" to R.drawable.coconut,
-                "blackgram" to R.drawable.blackgram,
-                "jute" to R.drawable.jute,
-                "kidneybeans" to R.drawable.kidneybeans,
-                "pigeonpeas" to R.drawable.pigeonspeas,
-                "orange" to R.drawable.orange,
-                "pomegranate" to R.drawable.pomegranate,
-                "apple" to R.drawable.apple,
-                "muskmelon" to R.drawable.muskmelon,
-            )
-            val cropHeading = mapOf(
-                "mothbeans" to R.string.mothbeans,
-                "coffee" to R.string.coffee,
-                "rice" to R.string.rice,
-                "chickpea" to R.string.chickpeas,
-                "cotton" to R.string.cotton,
-                "maize" to R.string.maize,
-                "coconut" to R.string.coconut,
-                "blackgram" to R.string.blackgram,
-                "jute" to R.string.jute,
-                "kidneybeans" to R.string.kidneybeans,
-                "pigeonpeas" to R.string.pigeon_peas,
-                "orange" to R.string.oranges,
-                "pomegranate" to R.string.pomegranate,
-                "muskmelon" to R.string.muskmelon,
-            )
-            val cropFertReq = mapOf(
-                "mothbeans" to R.string.mothbeansdesc,
-                "coffee" to R.string.coffeedesc,
-                "rice" to R.string.ricedesc,
-                "chickpea" to R.string.chickpeadesc,
-                "cotton" to R.string.cottondesc,
-                "maize" to R.string.maizedesc,
-                "coconut" to R.string.coconutdesc,
-                "blackgram" to R.string.blackgramdesc,
-                "jute" to R.string.jutedesc,
-                "kidneybeans" to R.string.kidneybeansdesc,
-                "pigeonpeas" to R.string.pigeonpeasdesc,
-                "orange" to R.string.orangedesc,
-                "pomegranate" to R.string.pomegranatedesc,
-                "apple" to R.string.appledesc,
-                "muskmelon" to R.string.muskmelonfertreq,
-            )
-            val imageResId = cropImageMap[crop.lowercase()] ?: R.drawable.mothbeans
-            val cropHeadId = cropHeading[crop.lowercase()] ?: R.string.mothbeans
-            val cropFertReqId = cropFertReq[crop.lowercase()] ?: R.string.mothbeansdesc
-
-            val beforePlantingFertilizers = listOf(
-                "Compost",
-                "Bone Meal",
-                "Blood Meal",
-                "Worm Castings"
-            )
-
-// After Planting
-            val afterPlantingFertilizers = listOf(
-                "Compost Tea",
-                "Fish Emulsion",
-                "Kelp Meal",
-                "Well-aged Manure"
-            )
+            val imageResId = getImageResIdForCrop(crop) ?: R.drawable.mothbeans
+            val cropHeadId = getHeadResIdForCrop(crop) ?: R.string.mothbeans
+            val cropFertReqId = getFertIdForCrop(crop) ?: R.string.mothbeansfertreq
 
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) { // Wrap elements in a Column
                 Image(painter = painterResource(id = imageResId), contentDescription = "CropImage")
@@ -309,9 +241,9 @@ fun Box2(crop: String){
                 CardDesc2(value = stringResource(cropFertReqId))
                 CardSubHeading(value = "Organic Fertilizers to Use:")
                 CardSubHeading2(value = "Before Planting:")
-                CircularBulletList(items = beforePlantingFertilizers)
+                getBeforePlantingForCrop(crop)?.let { CircularBulletList(items = it) }
                 CardSubHeading2(value = "After Planting:")
-                CircularBulletList(items = afterPlantingFertilizers)
+                getAfterPlantingForCrop(crop)?.let { CircularBulletList(items = it) }
 
 
             }
@@ -373,11 +305,17 @@ fun AdvancedCropCarousel(crop: String) {
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-        ) { _ ->
-            when (currentCard) {
-                0 -> CropBox(crop)
-                1 -> Box2(crop)
+        ) { page -> AnimatedVisibility(
+            visible = page == currentCard,
+            enter = slideInHorizontally() + fadeIn(),
+            exit = slideOutHorizontally() + fadeOut()
+        )
+            {
+                when (currentCard) {
+                    0 -> CropBox(crop)
+                    1 -> Box2(crop)
 //              2 -> CropStatsCard(cropSummary!!)
+                }
             }
         }
 

@@ -62,7 +62,9 @@ fun Home(navController: NavHostController) {
             }
         }
         Divider()
-        HomeCard("Get Crop Recommendation", onClick = {navController.navigate(Route.CropRecommendations.routes)})
+        HomeCard("Get Crop Recommendation", onClick = {navController.navigate(Route.CropRecommendations.routes){
+            launchSingleTop = true
+        } })
         HomeCard(value = "Update Soil Parameters",onClick = {navController.navigate(Route.ParamsUpdater.routes)})
         HomeCard(value = "Price Prediction",onClick = {navController.navigate(Route.PricePrediction.routes)})
 //        HomeCard(value = "Fertilizer Recommendation",onClick = {navController.navigate(Route.CropRecommendations.routes)})

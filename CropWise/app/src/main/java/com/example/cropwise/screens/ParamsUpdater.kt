@@ -112,10 +112,10 @@ fun ParamsUpdater(navController: NavHostController) {
             Spacer(modifier = Modifier.padding(18.dp))
             Row {
                 ParamsUpdateButton(
-                    Nitrogen = validateInput(Nitrogen) ?: 0,
-                    Phosphorus = validateInput(Phosphorus) ?: 0,
-                    Pottasium = validateInput(Potassium) ?: 0,
-                    Ph = validateInput(Ph) ?: 0,
+                    nitrogen = validateInput(Nitrogen) ?: 0,
+                    phosphorus = validateInput(Phosphorus) ?: 0,
+                    potassium = validateInput(Potassium) ?: 0,
+                    ph = validateInput(Ph) ?: 0,
                     navController = navController,
 //                    onClick = {isLoading = true}
                 )
