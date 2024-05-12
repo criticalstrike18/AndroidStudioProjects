@@ -21,7 +21,7 @@ fun NavGraph(navController: NavHostController){
 
     NavHost(navController = navController, startDestination = Route.Splash.routes) {
         composable(Route.Splash.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
-            Splash(navController, viewModel = AuthViewModel())
+            Splash(navController)
         }
 
 

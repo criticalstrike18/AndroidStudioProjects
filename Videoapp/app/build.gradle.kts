@@ -1,6 +1,9 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -18,6 +21,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val properties = gradleLocalProperties(rootDir,project.providers)
+        buildConfigField("String", "supabaseUrl", "\"${properties.getProperty("supabaseUrl")}\"")
+        buildConfigField("String", "supabaseKey", "\"${properties.getProperty("supabaseKey")}\"")
     }
 
     buildTypes {
@@ -38,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -66,10 +73,26 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    //ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    //Material3
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+    //iconpack
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
     //Supabase
-    implementation(platform("io.github.jan-tennert.supabase:bom:$2.3.1"))
-    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.4.0")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.0")
     //ktor
-    implementation("io.ktor:ktor-client-android:$2.3.10")
+    implementation("io.ktor:ktor-client-core:2.3.10")
+    implementation("io.ktor:ktor-client-cio:2.3.10")
+    //Stateflow
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    //MediaPlayer
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
+    implementation("androidx.media3:media3-common:1.3.1")
+
 }

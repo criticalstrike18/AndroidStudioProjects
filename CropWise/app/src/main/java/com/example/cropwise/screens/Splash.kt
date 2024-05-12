@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
-fun Splash(navController: NavHostController,viewModel: AuthViewModel){
+fun Splash(navController: NavHostController){
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
         val (image) = createRefs()
