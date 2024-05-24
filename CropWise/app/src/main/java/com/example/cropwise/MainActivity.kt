@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.cropwise.navigation.NavGraph
+import com.example.cropwise.screens.BottomNavBar
 import com.example.cropwise.ui.theme.CropWiseTheme
 import com.google.firebase.FirebaseApp
 
@@ -25,8 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
+                    BottomNavBar()
                 }
             }
         }
