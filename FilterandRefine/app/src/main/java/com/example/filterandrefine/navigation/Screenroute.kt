@@ -6,6 +6,7 @@ sealed class ScreenRoute(val route: String) {
     data object ServicesScreen : ScreenRoute("services_screen")
     data object BusinessesScreen : ScreenRoute("businesses_screen")
     data object RefineScreen : ScreenRoute("refine_screen")
+    data object FilterScreen : ScreenRoute("filter_screen")
     data object ConnectionsScreen : ScreenRoute("connections_screen")
     data object ChatScreen : ScreenRoute("chat_screen")
     data object ContactsScreen : ScreenRoute("contacts_screen")

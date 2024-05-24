@@ -17,6 +17,6 @@ fun ExploreScreen(navController: NavHostController){
         .padding(top = 16.dp),
     ) {
         TopHeader(navController)
-        TopTabBar()
+        TopTabBar(navControllerOg = navController)
     }
 }

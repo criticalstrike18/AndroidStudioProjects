@@ -10,25 +10,36 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.Dehaze
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.outlined.Checklist
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
@@ -44,6 +55,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +65,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.navigation.NavHostController
+import com.example.filterandrefine.data.ProfileData
 import com.example.filterandrefine.navigation.ScreenRoute
 
 
@@ -97,11 +111,15 @@ fun TopHeader(navController: NavHostController){
             Modifier
                 .fillMaxWidth()
                 .padding(end = 20.dp, top = 6.dp)
-                .clickable(onClick = {navController.navigate(ScreenRoute.RefineScreen.route) {
-                    launchSingleTop = true
-                }},
+                .clickable(
+                    onClick = {
+                        navController.navigate(ScreenRoute.RefineScreen.route) {
+                            launchSingleTop = true
+                        }
+                    },
                     indication = null,
-                    interactionSource = interactionSource)
+                    interactionSource = interactionSource
+                )
                 .scale(
                     scale = if (interactionSource.collectIsPressedAsState().value) 0.92f else 1f
                 ),
@@ -137,12 +155,14 @@ fun RefineTitleHeader(navController: NavHostController){
                 modifier = Modifier
                     .padding(start = 20.dp, end = 8.dp, top = 15.dp)
                     .size(20.dp)
-                    .clickable(onClick = { navController.navigate(ScreenRoute.ExploreScreen.route) },
-                            indication = rememberRipple(
-                                bounded = false,
-                                radius = 25.dp
-                            ),
-                            interactionSource = interactionSource)
+                    .clickable(
+                        onClick = { navController.navigate(ScreenRoute.ExploreScreen.route) },
+                        indication = rememberRipple(
+                            bounded = false,
+                            radius = 25.dp
+                        ),
+                        interactionSource = interactionSource
+                    )
             )
             Text(
                 text = "Refine", fontSize = 26.sp,
@@ -152,7 +172,15 @@ fun RefineTitleHeader(navController: NavHostController){
         }
     }
 }
-
+@Composable
+fun UploadFab(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = { onClick() },
+        shape = CircleShape,
+    ) {
+        Icon(Icons.Filled.Add, "Floating action button.")
+    }
+}
 @Composable
 fun TitledDropDown(){
     Column(modifier = Modifier.padding(16.dp)) {
@@ -369,5 +397,110 @@ fun SaveButton(text: String, onClick: () -> Unit) { // onClick is a lambda funct
         modifier = Modifier.padding(start = 135.dp,top = 16.dp),
     ) {
         Text(text = text)
+    }
+}
+
+@Composable
+fun ProfileCard(profileData: ProfileData) {
+    Box(modifier = Modifier.padding(4.dp)) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 28.dp, end = 8.dp, top = 12.dp),
+            shape = RoundedCornerShape(8),
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 55.dp)
+                    ) {
+                        Text(
+                            text = profileData.name,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(text = "${profileData.location} | ${profileData.designation}", fontSize = 14.sp)
+                        Text(text = "Within ${profileData.distance}", fontSize = 12.sp)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            LinearProgressIndicator(
+                                progress = { profileData.profileScore / 100f },
+                                color = MaterialTheme.colorScheme.primary,
+                                trackColor = MaterialTheme.colorScheme.surface,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 2.dp)
+                                    .weight(1f),
+                                strokeCap = StrokeCap.Round
+                            )
+                            Text(
+                                text = "ProfileScore - ${profileData.profileScore}%",
+                                modifier = Modifier
+                                    .padding(start = 6.dp),
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                    Column {
+                        Text(text = "+ INVITE", color = MaterialTheme.colorScheme.primary)
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Interests
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    InterestChip(text = "Coffee", icon = Icons.Filled.Coffee)
+                    Text(text = "|", color = MaterialTheme.colorScheme.primary)
+                    InterestChip(text = "Friendship", icon = Icons.Filled.People)
+                    Text(text = "|", color = MaterialTheme.colorScheme.primary)
+                    InterestChip(text = "Dating", icon = Icons.Filled.Favorite)
+                }
+                Text(text = profileData.bio, modifier = Modifier.padding(horizontal = 8.dp) ,fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        Column {
+            Box(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .size(95.dp)
+                    .background(
+                        MaterialTheme.colorScheme.inversePrimary,
+                        shape = RoundedCornerShape(25)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = profileData.initials,
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun InterestChip(text: String, icon: ImageVector) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical =2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(imageVector = icon, contentDescription = text, modifier = Modifier.size(16.dp))
+        Text(text = text, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 4.dp))
     }
 }

@@ -10,6 +10,7 @@ import com.example.filterandrefine.screens.ChatScreen
 import com.example.filterandrefine.screens.ConnectionsScreen
 import com.example.filterandrefine.screens.ContactsScreen
 import com.example.filterandrefine.screens.ExploreScreen
+import com.example.filterandrefine.screens.FilterScreen
 import com.example.filterandrefine.screens.GroupsScreen
 import com.example.filterandrefine.screens.PersonalScreen
 import com.example.filterandrefine.screens.RefineScreen
@@ -25,6 +26,10 @@ fun Navigation(navController:NavHostController) {
 
         composable(ScreenRoute.RefineScreen.route) {
             RefineScreen(navController)
+        }
+
+        composable(ScreenRoute.FilterScreen.route) {
+            FilterScreen(navController)
         }
 
         composable(ScreenRoute.ConnectionsScreen.route) {
@@ -46,16 +51,19 @@ fun Navigation(navController:NavHostController) {
 }
 
 @Composable
-fun TopBarNavigation(navController:NavHostController) {
+fun TopBarNavigation(navController:NavHostController,navControllerOg: NavHostController) {
     NavHost(navController = navController, startDestination = ScreenRoute.PersonalScreen.route){
         composable(ScreenRoute.PersonalScreen.route) {
-            PersonalScreen(navController)
+            PersonalScreen(navControllerOg)
         }
         composable(ScreenRoute.ServicesScreen.route) {
             ServicesScreen(navController)
         }
         composable(ScreenRoute.BusinessesScreen.route) {
             BusinessesScreen(navController)
+        }
+        composable(ScreenRoute.FilterScreen.route) {
+            FilterScreen(navController)
         }
     }
 }

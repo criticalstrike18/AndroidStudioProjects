@@ -14,6 +14,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.filterandrefine.navigation.ScreenRoute
 import com.example.filterandrefine.data.topTabItem
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TopTabBar(){
+fun TopTabBar(navControllerOg: NavHostController){
     val navController = rememberNavController()
     val tabItems = listOf(
         topTabItem(
@@ -65,7 +66,7 @@ fun TopTabBar(){
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)) {
-            TopBarNavigation(navController)
+            TopBarNavigation(navController,navControllerOg)
 
         }
 

@@ -25,7 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.filterandrefine.data.bottomNavItem
+import com.example.filterandrefine.data.BottomNavItem
 import com.example.filterandrefine.navigation.Navigation
 import com.example.filterandrefine.navigation.ScreenRoute
 
@@ -46,31 +46,31 @@ fun BottomNavBar(){
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
     val items = listOf(
-        bottomNavItem(
+        BottomNavItem(
             name = "Explore",
             route = ScreenRoute.ExploreScreen.route,
             selectedIcon = Icons.Filled.RemoveRedEye,
             unselectedIcon = Icons.Outlined.RemoveRedEye,
         ),
-        bottomNavItem(
+        BottomNavItem(
             name = "Connections",
             route = ScreenRoute.ConnectionsScreen.route,
             selectedIcon = Icons.Filled.Diversity1,
             unselectedIcon = Icons.Outlined.Diversity1,
         ),
-        bottomNavItem(
+        BottomNavItem(
             name = "Chat",
             route = ScreenRoute.ChatScreen.route,
             selectedIcon = Icons.AutoMirrored.Filled.Chat,
             unselectedIcon = Icons.AutoMirrored.Outlined.Chat,
         ),
-        bottomNavItem(
+        BottomNavItem(
             name = "Contacts",
             route = ScreenRoute.ContactsScreen.route,
             selectedIcon = Icons.Filled.Contacts,
             unselectedIcon = Icons.Outlined.Contacts,
         ),
-        bottomNavItem(
+        BottomNavItem(
             name = "Groups",
             route = ScreenRoute.GroupsScreen.route,
             selectedIcon = Icons.Filled.Groups,
