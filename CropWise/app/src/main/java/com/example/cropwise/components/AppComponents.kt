@@ -246,14 +246,21 @@ fun RegisterButton(firstName: String, lastName: String, email: String, password:
 
 @Composable
 fun HandleRegistrationSuccess(firebaseUser: FirebaseUser?, navController: NavHostController) {
+    // Define a state to track registration success
+    var registrationSuccess by remember { mutableStateOf(false) }
+    // Use LaunchedEffect to update the state based on firebaseUser
     LaunchedEffect(key1 = firebaseUser) {
         if (firebaseUser != null) {
             Log.d("navigating", "User registered")
-            navController.navigate(Route.BottomNav.routes) {
-                launchSingleTop = true
-            }
+            registrationSuccess = true
         } else {
             Log.d("failed", "Registration failed")
+        }
+    }
+    if (registrationSuccess) {
+        // Navigate to BottomNavBar using navController
+        navController.navigate(Route.BottomNavBar.routes){
+            launchSingleTop =true
         }
     }
 }
@@ -473,7 +480,7 @@ fun CardSubHeading(value: String) {
         fontSize = 18.sp,
         modifier = Modifier
             .fillMaxWidth() // Make Text fill the card
-            .padding(12.dp,1.dp,0.dp,8.dp),
+            .padding(12.dp, 1.dp, 0.dp, 8.dp),
     )
 }
 @Composable
@@ -489,7 +496,7 @@ fun CardDesc2(value: String) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 2.dp,16.dp,7.dp),
+            .padding(16.dp, 2.dp, 16.dp, 7.dp),
     )
 }
 
@@ -501,7 +508,7 @@ fun CardSubHeading2(value: String) {
         fontSize = 16.sp,
         modifier = Modifier
             .fillMaxWidth() // Make Text fill the card
-            .padding(12.dp,1.dp,0.dp,8.dp),
+            .padding(12.dp, 1.dp, 0.dp, 8.dp),
     )
 }
 

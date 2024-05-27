@@ -24,18 +24,20 @@ import com.example.cropwise.utils.SharedPrefs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseDatabase.getInstance()
     private val userRef = db.getReference("users")
+    private val _currentUser = MutableLiveData<FirebaseUser?>(auth.currentUser)
+    val currentUser: LiveData<FirebaseUser?> get() = _currentUser
 
 //    private val storageRef = Firebase.storage.reference
 
     private val _firebaseUser = MutableLiveData<FirebaseUser?>()
     val firebaseUser : MutableLiveData<FirebaseUser?> = _firebaseUser
-
     private val _error = MutableLiveData<String>()
 //    val error : LiveData<String> = _error
 
@@ -45,23 +47,29 @@ class AuthViewModel : ViewModel() {
     private val _userFirstName = MutableLiveData<String?>(null)
     val userFirstName : LiveData<String?> = _userFirstName
 
+    val userName = MutableStateFlow<String>("")
+
     private val _location = mutableStateOf<Locationdata?>(null)
             val location: State<Locationdata?> = _location
 
+    val userId = auth.currentUser?.uid
 
-
-
+    init {
+        auth.addAuthStateListener {
+            _currentUser.value = it.currentUser
+        }
+    }
 
     init {
         _firebaseUser.value =auth.currentUser
     }
 
     fun login(email: String, password: String){
-
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     _firebaseUser.postValue(auth.currentUser)
+
                 }
                 else {
                     _error.postValue("Something went wrong.")

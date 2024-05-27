@@ -1,7 +1,10 @@
+@file:Suppress("NAME_SHADOWING")
+
 package com.example.filterandrefine.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -17,27 +20,26 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.Dehaze
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Checklist
+import androidx.compose.material.icons.outlined.Coffee
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -45,6 +47,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -55,8 +58,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -65,6 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.navigation.NavHostController
+import com.example.filterandrefine.R
 import com.example.filterandrefine.data.ProfileData
 import com.example.filterandrefine.navigation.ScreenRoute
 
@@ -73,13 +81,15 @@ import com.example.filterandrefine.navigation.ScreenRoute
 fun TopHeader(navController: NavHostController){
     val interactionSource = remember { MutableInteractionSource() }
     Row(modifier = Modifier
+        .background(color = colorResource(id = R.color.darkBlue))
         .fillMaxWidth()
-        .padding(top = 16.dp, start = 16.dp)) {
+        .padding(top = 28.dp, start = 16.dp)) {
         Icon(imageVector = Icons.Filled.Dehaze,
             contentDescription = "SideRail",
             modifier = Modifier
                 .padding(start = 6.dp, end = 8.dp, top = 10.dp)
                 .size(40.dp),
+            colorResource(id = R.color.white)
         )
         Column(modifier = Modifier.padding(top = 3.dp, start = 8.dp, end = 8.dp)) {
             Box {
@@ -87,7 +97,8 @@ fun TopHeader(navController: NavHostController){
                     text = "Howdy Saksham !!", modifier = Modifier
                         .padding(top = 6.dp, start = 8.dp),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = colorResource(id = R.color.white)
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -97,12 +108,14 @@ fun TopHeader(navController: NavHostController){
                         imageVector = Icons.Filled.LocationOn, contentDescription = "LocationIcon",
                         modifier = Modifier
                             .padding(start = 2.dp, end = 2.dp)
-                            .size(16.dp)
+                            .size(16.dp),
+                        colorResource(id = R.color.white)
                     )
                     Text(
                         text = "Talegaon, Pune", fontSize = 12.sp,
                         modifier = Modifier.padding(0.dp),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = colorResource(id = R.color.white)
                     )
                 }
             }
@@ -129,9 +142,10 @@ fun TopHeader(navController: NavHostController){
                 Icon(
                     imageVector = Icons.Outlined.Checklist, contentDescription = "RefineIcon",
                     modifier = Modifier
-                        .size(35.dp)
+                        .size(35.dp),
+                    colorResource(id = R.color.white)
                 )
-                Text(text = "Refine", fontSize = 12.sp, modifier = Modifier.padding(top = 28.dp))
+                Text(text = "Refine", fontSize = 12.sp, modifier = Modifier.padding(top = 28.dp), color = colorResource(id = R.color.white))
             }
 
         }
@@ -140,18 +154,17 @@ fun TopHeader(navController: NavHostController){
 }
 
 @Composable
-fun RefineTitleHeader(navController: NavHostController){
+fun RefineTitleHeader(navController: NavHostController,title: String,icon: ImageVector){
     Column(modifier = Modifier
-        .padding(top = 12.dp)
         .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.background)) {
+        .background(colorResource(id = R.color.mediumBlue))) {
         Row(
             horizontalArrangement = Arrangement.Absolute.Center,
-            modifier = Modifier.padding(start = 6.dp, top = 26.dp)
+            modifier = Modifier.padding(start = 6.dp, top = 32.dp, bottom = 8.dp)
         ) {
             val interactionSource = remember { MutableInteractionSource() }
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBackIos, contentDescription = "LocationIcon",
+                imageVector = icon, contentDescription = title,
                 modifier = Modifier
                     .padding(start = 20.dp, end = 8.dp, top = 15.dp)
                     .size(20.dp)
@@ -162,25 +175,19 @@ fun RefineTitleHeader(navController: NavHostController){
                             radius = 25.dp
                         ),
                         interactionSource = interactionSource
-                    )
+                    ),
+                colorResource(id = R.color.white)
             )
             Text(
-                text = "Refine", fontSize = 26.sp,
+                text = title, fontSize = 26.sp,
                 modifier = Modifier.padding(start = 20.dp, top = 8.dp),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.white)
             )
         }
     }
 }
-@Composable
-fun UploadFab(onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = { onClick() },
-        shape = CircleShape,
-    ) {
-        Icon(Icons.Filled.Add, "Floating action button.")
-    }
-}
+
 @Composable
 fun TitledDropDown(){
     Column(modifier = Modifier.padding(16.dp)) {
@@ -188,7 +195,7 @@ fun TitledDropDown(){
             text = "Select Your Availability", fontSize = 14.sp,
             modifier = Modifier.padding(start = 28.dp, top = 8.dp, bottom = 6.dp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = colorResource(id = R.color.darkBlue)
         )
         OutlinedDropDownMenu()
     }
@@ -201,7 +208,7 @@ fun TitledTextBox(){
             text = "Add Your Status", fontSize = 14.sp,
             modifier = Modifier.padding(start = 28.dp, top = 6.dp, bottom = 6.dp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = colorResource(id = R.color.darkBlue)
         )
         LiveTextFieldWithCharCount()
     }
@@ -214,7 +221,7 @@ fun TitledSlider(){
             text = "Select Hyper local Distance", fontSize = 14.sp,
             modifier = Modifier.padding(start = 28.dp, top = 6.dp, bottom = 6.dp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = colorResource(id = R.color.darkBlue)
         )
         DistanceSlider()
     }
@@ -226,7 +233,7 @@ fun PurposeSelection(){
             text = "Select Purpose", fontSize = 14.sp,
             modifier = Modifier.padding(start = 28.dp, top = 12.dp, bottom = 4.dp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = colorResource(id = R.color.darkBlue)
         )
         Row(modifier = Modifier.padding(start = 28.dp)) {
             ToggleableButton(title = "Coffee", onToggle = { })
@@ -256,7 +263,8 @@ fun OutlinedDropDownMenu() {
     Column(Modifier.padding(start = 28.dp)) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
+            onExpandedChange = { expanded = !expanded },
+            Modifier.background(Color.White)
         ) {
             OutlinedTextField(
                 value = items[selectedItem],
@@ -268,7 +276,16 @@ fun OutlinedDropDownMenu() {
                     .menuAnchor()
                     .fillMaxWidth(),
                 textStyle = TextStyle(fontSize = 14.sp),
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(20.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedIndicatorColor = colorResource(id = R.color.blueGrey),
+                    focusedIndicatorColor = colorResource(id = R.color.darkBlue),
+                    unfocusedLabelColor = colorResource(id = R.color.darkBlue),
+                    unfocusedPlaceholderColor = colorResource(id = R.color.darkBlue),
+                )
             )
 
             DropdownMenu(
@@ -276,8 +293,8 @@ fun OutlinedDropDownMenu() {
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
                     .fillMaxWidth(.75f)
-                    .padding(8.dp),
-                offset = DpOffset(8. dp,2.dp)
+                    .background(colorResource(id = R.color.white)),
+                offset = DpOffset(8. dp,2.dp),
             ) {
                 items.forEachIndexed { index, text ->
                     DropdownMenuItem(text = { Text(text, fontSize = 12.sp) },
@@ -306,6 +323,15 @@ fun LiveTextFieldWithCharCount() {
                 .padding(start = 30.dp),
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(20.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedIndicatorColor = colorResource(id = R.color.blueGrey),
+                focusedIndicatorColor = colorResource(id = R.color.darkBlue),
+                unfocusedLabelColor = colorResource(id = R.color.darkBlue),
+                unfocusedPlaceholderColor = colorResource(id = R.color.darkBlue),
+            )
         )
 
         Text(
@@ -313,7 +339,7 @@ fun LiveTextFieldWithCharCount() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, end = 4.dp),
-            color = MaterialTheme.colorScheme.primary,
+            color = colorResource(id = R.color.mediumBlue),
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.bodyMedium
         )
@@ -334,9 +360,9 @@ fun DistanceSlider() {
             valueRange = 1f..100f,
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.primary,
-                activeTrackColor = MaterialTheme.colorScheme.secondary,
-                inactiveTrackColor = MaterialTheme.colorScheme.inversePrimary,
+                thumbColor = colorResource(id = R.color.darkBlue),
+                activeTrackColor = colorResource(id = R.color.mediumBlue),
+                inactiveTrackColor = colorResource(id = R.color.blueGrey),
                 activeTickColor = MaterialTheme.colorScheme.primaryContainer,
                 inactiveTickColor = MaterialTheme.colorScheme.primaryContainer
             )
@@ -371,21 +397,21 @@ fun ToggleableButton(title: String,
         enabled = enabled,
         shape = RoundedCornerShape(75),
         colors = if (isSelected) {
-            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkBlue))
         } else {
-            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
+            ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.white))
         },
         border = if (isSelected) {
             null
         } else {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+            BorderStroke(1.dp, colorResource(id = R.color.mediumBlue))
         },
         contentPadding = PaddingValues(horizontal = 13.dp, vertical = 4.dp),
     ) {
         Text(title,
             color = if (isSelected)
                 MaterialTheme.colorScheme.onPrimary
-            else MaterialTheme.colorScheme.primary,
+            else colorResource(id = R.color.darkBlue),
             fontSize = 12.sp)
     }
 }
@@ -395,6 +421,7 @@ fun SaveButton(text: String, onClick: () -> Unit) { // onClick is a lambda funct
     Button(
         onClick = onClick, // Call the provided function when the button is clicked
         modifier = Modifier.padding(start = 135.dp,top = 16.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkBlue))
     ) {
         Text(text = text)
     }
@@ -406,12 +433,20 @@ fun ProfileCard(profileData: ProfileData) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 28.dp, end = 8.dp, top = 12.dp),
+                .padding(start = 28.dp, end = 8.dp, top = 12.dp)
+                .border(
+                    width = 1.dp, color = colorResource(id = R.color.blueGrey),
+                    shape = RoundedCornerShape(8)
+                ),
             shape = RoundedCornerShape(8),
+            colors = CardDefaults.cardColors(
+                containerColor =  colorResource(id = R.color.white)
+            ),
         ) {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
+                    .background(colorResource(id = R.color.white))
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -429,15 +464,15 @@ fun ProfileCard(profileData: ProfileData) {
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        Text(text = "${profileData.location} | ${profileData.designation}", fontSize = 14.sp)
-                        Text(text = "Within ${profileData.distance}", fontSize = 12.sp)
+                        Text(text = "${profileData.location} | ${profileData.designation}",color = colorResource(id = R.color.mediumBlue) ,fontSize = 14.sp,fontWeight = FontWeight.Bold)
+                        Text(text = "Within ${profileData.distance} m", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             LinearProgressIndicator(
                                 progress = { profileData.profileScore / 100f },
-                                color = MaterialTheme.colorScheme.primary,
+                                color = colorResource(id = R.color.blueGrey),
                                 trackColor = MaterialTheme.colorScheme.surface,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -446,16 +481,16 @@ fun ProfileCard(profileData: ProfileData) {
                                 strokeCap = StrokeCap.Round
                             )
                             Text(
-                                text = "ProfileScore - ${profileData.profileScore}%",
+                                text = "ProfileScore- ${profileData.profileScore}%",
                                 modifier = Modifier
                                     .padding(start = 6.dp),
                                 fontSize = 10.sp,
-                                color = MaterialTheme.colorScheme.primary
+                                color = colorResource(id = R.color.mediumBlue)
                             )
                         }
                     }
                     Column {
-                        Text(text = "+ INVITE", color = MaterialTheme.colorScheme.primary)
+                        Text(text = "+ INVITE", fontWeight = FontWeight.Bold,color = colorResource(id = R.color.darkBlue))
                     }
 
                 }
@@ -463,13 +498,13 @@ fun ProfileCard(profileData: ProfileData) {
 
                 // Interests
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    InterestChip(text = "Coffee", icon = Icons.Filled.Coffee)
-                    Text(text = "|", color = MaterialTheme.colorScheme.primary)
-                    InterestChip(text = "Friendship", icon = Icons.Filled.People)
-                    Text(text = "|", color = MaterialTheme.colorScheme.primary)
-                    InterestChip(text = "Dating", icon = Icons.Filled.Favorite)
+                    InterestChip(text = "Coffee", icon = Icons.Outlined.Coffee,colorResource(id = R.color.darkBrown))
+                    Text(text = "|", color = colorResource(id = R.color.blueGrey))
+                    InterestChip(text = "Friendship", icon = Icons.Outlined.People,colorResource(id = R.color.Yellow))
+                    Text(text = "|", color = colorResource(id = R.color.blueGrey))
+                    InterestChip(text = "Dating", icon = Icons.Outlined.Favorite,Color.Red)
                 }
-                Text(text = profileData.bio, modifier = Modifier.padding(horizontal = 8.dp) ,fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(text = profileData.bio, modifier = Modifier.padding(horizontal = 8.dp) ,fontSize = 12.sp, fontWeight = FontWeight.Bold, color = colorResource(id = R.color.mediumBlue))
             }
         }
         Column {
@@ -478,7 +513,7 @@ fun ProfileCard(profileData: ProfileData) {
                     .padding(6.dp)
                     .size(95.dp)
                     .background(
-                        MaterialTheme.colorScheme.inversePrimary,
+                        colorResource(id = R.color.blueGrey),
                         shape = RoundedCornerShape(25)
                     ),
                 contentAlignment = Alignment.Center
@@ -486,7 +521,8 @@ fun ProfileCard(profileData: ProfileData) {
                 Text(
                     text = profileData.initials,
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.darkBlue)
                 )
             }
         }
@@ -494,13 +530,85 @@ fun ProfileCard(profileData: ProfileData) {
 }
 
 @Composable
-fun InterestChip(text: String, icon: ImageVector) {
+fun InterestChip(text: String, icon: ImageVector,composableColor: Color) {
+
+
     Row(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical =2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(imageVector = icon, contentDescription = text, modifier = Modifier.size(16.dp))
-        Text(text = text, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 4.dp))
+        Icon(imageVector = icon, contentDescription = text, modifier = Modifier.size(16.dp),composableColor)
+        Text(text = text, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 4.dp),color = composableColor)
+    }
+}
+
+@Composable
+fun CustomSearchBar(
+    modifier: Modifier = Modifier,
+    searchText: String,
+    onQueryChange: (String) -> Unit,
+    placeholderText: String = "Search",
+    backgroundColor: Color = colorResource(id = R.color.white),
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    borderColor: Color = colorResource(id = R.color.mediumBlue),
+    focusedBorderColor: Color = colorResource(id = R.color.darkBlue)
+) {
+    var isFocused by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8), // Rounded corners
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            BasicTextField(
+                value = searchText,
+                onValueChange = onQueryChange,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(.4f)
+                    .height(36.dp)
+                    .border(
+                        width = 1.dp, color = colorResource(id = R.color.mediumBlue),
+                        shape = RoundedCornerShape(20)
+                    )
+                    .background(
+                        color = Color.Transparent, // Transparent background
+                        shape = RoundedCornerShape(80) // Rounded corners
+                    )
+                    .onFocusChanged { isFocused = it.isFocused },
+                textStyle = TextStyle(
+                    color = textColor,
+                    fontSize = 16.sp
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                decorationBox = { innerTextField ->
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(start = 8.dp, top = 2.dp)) { // Row for icon and text
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Search",
+                            tint = textColor // Match icon color to text color,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp)) // Add some space between icon and text
+                        Box(contentAlignment = Alignment.CenterStart) {
+                            if (searchText.isEmpty()) { // Show placeholder when empty
+                                Text(
+                                    text = placeholderText, // Dim placeholder color
+                                    fontSize = 15.sp
+                                )
+                            }
+                            innerTextField() // Render the actual text field
+                        }
+                    }
+                }
+            )
+        }
     }
 }

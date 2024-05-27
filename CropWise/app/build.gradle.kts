@@ -92,4 +92,8 @@ dependencies {
     implementation("co.yml:ycharts:2.1.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("androidx.compose.foundation:foundation:1.6.6")
+    //    Splash
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    //    SharefPrefs
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }

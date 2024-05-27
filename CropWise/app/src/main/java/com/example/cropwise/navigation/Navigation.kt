@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cropwise.ViewModel.AuthViewModel
+import com.example.cropwise.screens.BottomNavBar
 import com.example.cropwise.screens.CropRecommendations
 import com.example.cropwise.screens.Home
 import com.example.cropwise.screens.Login
@@ -16,8 +17,8 @@ import com.example.cropwise.screens.PricePrediction
 import com.example.cropwise.screens.Register
 
 @Composable
-fun Navigation(navController:NavHostController) {
-    NavHost(navController = navController, startDestination = Route.Home.routes) {
+fun Navigation(navController:NavHostController, startRoute: Route) {
+    NavHost(navController = navController, startDestination = startRoute.routes) {
         composable(Route.Home.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
             Home(navController)
         }
@@ -34,17 +35,31 @@ fun Navigation(navController:NavHostController) {
             CropRecommendations(viewModel = AuthViewModel(),navController)
         }
 
-
         composable(Route.PricePrediction.routes) {
             PricePrediction()
         }
-
         composable(Route.Login.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
             Login(navController)
         }
 
         composable(Route.Register.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
             Register(navController)
+        }
+    }
+}
+@Composable
+fun LoginNavigation(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Route.BottomNavBar.routes) {
+        composable(Route.Login.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
+            Login(navController)
+        }
+
+        composable(Route.Register.routes, enterTransition = { fadeIn() }, exitTransition = { fadeOut() }) {
+            Register(navController)
+        }
+
+        composable(Route.BottomNavBar.routes) {
+            BottomNavBar(navController = navController)
         }
     }
 }

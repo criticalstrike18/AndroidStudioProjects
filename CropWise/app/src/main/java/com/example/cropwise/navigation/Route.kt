@@ -3,7 +3,7 @@ package com.example.cropwise.navigation
 sealed class Route(val routes:String) {
 
     object Home : Route("home")
-    object BottomNav : Route("bottomNav")
+    object BottomNavBar : Route("bottomNavBar")
     object Splash : Route("splash")
     object CropRecommendations : Route("CropRecommendations")
     object Login : Route("login")

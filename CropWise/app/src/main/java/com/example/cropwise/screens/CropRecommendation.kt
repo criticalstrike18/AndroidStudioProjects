@@ -17,11 +17,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -191,7 +191,8 @@ fun CropBox(crop:String) {
     Box(
         modifier = Modifier
             .padding(30.dp)
-            .fillMaxSize()
+            .fillMaxWidth()
+            .fillMaxHeight(0.9f)
     ) {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
@@ -255,9 +256,8 @@ fun Box2(crop: String){
 fun PagerIndicator(pageCount: Int, pageState: PagerState) { // Add PagerState
     Row(
         modifier = Modifier
-            .wrapContentHeight()
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(bottom = 80.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         repeat(pageCount) { index ->

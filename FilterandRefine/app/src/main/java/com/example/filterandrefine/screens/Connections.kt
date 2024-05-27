@@ -12,7 +12,6 @@ import com.example.filterandrefine.components.TopHeader
 @Composable
 fun ConnectionsScreen(navController: NavHostController){
     Column(modifier = Modifier.fillMaxSize()
-        .padding(top = 16.dp),
     ) {
         TopHeader(navController)
     }

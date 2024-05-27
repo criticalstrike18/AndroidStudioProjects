@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -30,7 +32,7 @@ fun FilterScreen(navController: NavHostController){
             interactionSource = remember { MutableInteractionSource() })
     }
     ) {
-        RefineTitleHeader(navController)
+        RefineTitleHeader(navController,"Filter", Icons.Filled.Close)
         HorizontalDivider(modifier = Modifier.padding(10.dp)
             .fillMaxWidth())
         TitledDropDown()

@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -37,6 +38,8 @@ fun Home(navController: NavHostController) {
     val viewModel = viewModel<AuthViewModel>()
     viewModel.fetchusername()
     val name by viewModel.userFirstName.observeAsState("")
+//    val name by viewModel.userName
+
     Column(modifier = Modifier
         .padding(12.dp)
         .fillMaxSize()) {

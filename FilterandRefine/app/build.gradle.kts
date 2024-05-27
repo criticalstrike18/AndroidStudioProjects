@@ -1,6 +1,9 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -18,6 +21,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val properties = gradleLocalProperties(rootDir,project.providers)
+        buildConfigField("String", "supabaseUrl", "\"${properties.getProperty("supabaseUrl")}\"")
+        buildConfigField("String", "supabaseKey", "\"${properties.getProperty("supabaseKey")}\"")
     }
 
     buildTypes {
@@ -38,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -66,7 +73,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    //Navigation
     implementation ("androidx.navigation:navigation-compose:2.7.7")
+    //Icons
     implementation ("androidx.compose.material:material-icons-extended:1.6.7")
+    //Supabase
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.4.0")
+    //ktor
+    implementation("io.ktor:ktor-client-core:2.3.10")
+    implementation("io.ktor:ktor-client-cio:2.3.10")
 }
