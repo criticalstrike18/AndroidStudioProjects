@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "882163390213",
+    "project_id": "nileassociate-5bd85",
+    "storage_bucket": "nileassociate-5bd85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882163390213:android:92c4f61eecf56bdb69096c",
+        "android_client_info": {
+          "package_name": "com.example.authapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwq2QycE3ztYcaF1er0nETGmXAa38nKMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882163390213:android:18d95cb5ee70c4e969096c",
+        "android_client_info": {
+          "package_name": "com.example.nileassociate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwq2QycE3ztYcaF1er0nETGmXAa38nKMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
