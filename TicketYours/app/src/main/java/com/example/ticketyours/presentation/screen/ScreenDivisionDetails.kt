@@ -1,6 +1,5 @@
 package com.example.ticketyours.presentation.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.ticketyours.data.model.Division
 import com.example.ticketyours.presentation.cache.PreferencesManager
-import com.example.ticketyours.presentation.cache.rememberTempDataCache
 import com.example.ticketyours.presentation.components.FilledButton
 import com.example.ticketyours.presentation.components.LargeText
 import com.example.ticketyours.presentation.components.NormalTextField
@@ -46,15 +44,14 @@ fun DivisionDetailsPage(
     val scope = rememberCoroutineScope()
     val preferencesManager = remember { PreferencesManager(context) }
     val totalDivisions by preferencesManager.totalDivisionsFlow.collectAsState(initial = 1)
+    val divisions by preferencesManager.divisionsListFlow.collectAsState(initial = emptyList())
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
-        val screenNo = 1
-        val divisionNo = 1
-        TitleText(value = "Screen- $screenNo   Division- $divisionNo",
+        TitleText(value = "Screen- $currentScreenNo   Division- $currentDivisionNo",
             modifier = Modifier.padding(14.dp))
         NormalTextField(value = divisionName,
             labelValue = "Division Name",
@@ -69,6 +66,8 @@ fun DivisionDetailsPage(
         FilledButton(text = "Continue",
             onClick = {
                 scope.launch {
+                    val newDivision = Division(divisionName, rows)
+                    preferencesManager.setDivisionsList(divisions + newDivision)
                     if (currentDivisionNo < totalDivisions) {
                         navController.navigate(
                             Route.ScreenDivisionDetailsPage(
@@ -83,7 +82,6 @@ fun DivisionDetailsPage(
                             Route.ScreenSeatLayoutEditor(
                                 currentScreenNo = currentScreenNo,
                                 totalScreens = totalScreens,
-                                key = "divisionList",
                                 maxSeatsPerRow = maxSeatsPerRow,
                             )
                         )

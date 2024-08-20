@@ -10,18 +10,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.ticketyours.presentation.cache.PreferencesManager
 import com.example.ticketyours.presentation.components.FilledButton
 import com.example.ticketyours.presentation.components.LargeText
 import com.example.ticketyours.presentation.components.NormalTextField
 import com.example.ticketyours.presentation.components.NumberSelector
 import com.example.ticketyours.presentation.components.TitleText
 import com.example.ticketyours.presentation.navigation.Route
+import kotlinx.coroutines.launch
 
 @Composable
 fun TheaterRegisterPage(
@@ -29,6 +33,9 @@ fun TheaterRegisterPage(
 ){
     var theaterName by remember { mutableStateOf("") }
     var screen by remember { mutableIntStateOf(1) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val preferencesManager = remember { PreferencesManager(context) }
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -54,10 +61,14 @@ fun TheaterRegisterPage(
         FilledButton(
             text = "Continue",
             onClick = {
-                navController.navigate(Route.ScreenDetailsPage(
-                    currentScreenNo = 1,
-                    totalScreens = 1,
-                ))
+                scope.launch {
+                    preferencesManager.clearDataStore()
+                    navController.navigate(Route.ScreenDetailsPage(
+                        currentScreenNo = 1,
+                        totalScreens = 1,
+                    ))
+                }
+
             }
         )
     }

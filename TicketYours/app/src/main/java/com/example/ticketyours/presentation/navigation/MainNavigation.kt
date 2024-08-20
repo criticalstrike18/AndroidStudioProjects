@@ -11,6 +11,7 @@ import com.example.ticketyours.presentation.screen.DivisionDetailsPage
 import com.example.ticketyours.presentation.screen.ScreenDetailsPage
 import com.example.ticketyours.presentation.screen.SeatLayoutPage
 import com.example.ticketyours.presentation.screen.TheaterRegisterPage
+import com.example.ticketyours.presentation.screen.ViewSeatLayoutScreen
 
 @Composable
 fun MainNavigation() {
@@ -64,8 +65,12 @@ fun MainNavigation() {
                 navController,
                 args.currentScreenNo,
                 args.totalScreens,
-                args.key,
                 args.maxSeatsPerRow
+            )
+        }
+        composable<Route.ViewSeatLayoutScreen> {
+            ViewSeatLayoutScreen(
+                navController
             )
         }
     }

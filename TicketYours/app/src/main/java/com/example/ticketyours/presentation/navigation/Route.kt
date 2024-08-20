@@ -36,6 +36,7 @@ sealed class Route {
         val currentScreenNo: Int,
         val totalScreens: Int,
         val maxSeatsPerRow: Int,
-        val key: String
     ) : Route()
+    @Serializable
+    data object ViewSeatLayoutScreen : Route()
 }
